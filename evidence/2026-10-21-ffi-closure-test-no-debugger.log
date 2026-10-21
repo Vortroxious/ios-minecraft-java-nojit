@@ -1,0 +1,231 @@
+libffi closure test, 2026-10-21 14:57:26 +0000
+CS_DEBUGGED=0 debuggerNow=0 JIT flags=0x5 (iOS26=1 mirrored=0 TXM=1) page=16384
+== lwjgl (/private/var/containers/Bundle/Application/82EEEEFE-F357-4189-86B1-346F8BD829B6/Voxelium.app/java/lwjgl/liblwjgl.dylib)
+step 1: dlopen
+step 2: resolve LibFFI JNI exports
+  exports come from /private/var/containers/Bundle/Application/82EEEEFE-F357-4189-86B1-346F8BD829B6/Voxelium.app/java/lwjgl/liblwjgl.dylib
+  abi 1, types int 0x115e551f0 double 0x115e55268 ptr 0x115e55238 void 0x115e55160
+step 3: prep CIFs (GLFWkeyfun, GLFWcursorposfun, GLFWerrorfun, int(int,int), int(int))
+step 4.0: ffi_closure_alloc for GLFWkeyfun
+  writable 0x14fe30e80 code 0x1155b4000
+  trampoline 0x1155b4000: region 0x1155b4000+0x4000 prot r-x max rwx shared=1
+step 5.0: ffi_prep_closure_loc
+step 4.1: ffi_closure_alloc for GLFWcursorposfun
+  writable 0x14e10a080 code 0x1155b4010
+  trampoline 0x1155b4010: region 0x1155b4000+0x4000 prot r-x max rwx shared=1
+step 5.1: ffi_prep_closure_loc
+step 4.2: ffi_closure_alloc for GLFWerrorfun
+  writable 0x14e108b80 code 0x1155b4020
+  trampoline 0x1155b4020: region 0x1155b4000+0x4000 prot r-x max rwx shared=1
+step 5.2: ffi_prep_closure_loc
+step 4.3: ffi_closure_alloc for int(int,int)
+  writable 0x14e109b80 code 0x1155b4030
+  trampoline 0x1155b4030: region 0x1155b4000+0x4000 prot r-x max rwx shared=1
+step 5.3: ffi_prep_closure_loc
+step 6: call GLFWkeyfun closure on the main thread (about to execute the trampoline)
+  ok: calls 1 args 0x1234 65 30 1 2
+step 7: call GLFWcursorposfun closure on a new pthread (as LWJGL callbacks run on the JVM thread)
+  ok: calls 1 args 0xc0ffee 12.50 -7.25
+step 8: GLFWerrorfun closure through VXGLFW (glfwSetErrorCallback + a test error)
+  ok: calls 1 code 0x10004 text "libffi callback test"
+step 9: int(int,int) closure return value
+  ok: returned 3004
+step 10.0: allocate 2000 closures (more than one trampoline table), call every 97th, free all
+  allocated 2000 on 2 trampoline pages
+  ok: called 22, wrong 0, freed 2000
+step 10.1: allocate 2000 closures (more than one trampoline table), call every 97th, free all
+  allocated 2000 on 2 trampoline pages
+  ok: called 22, wrong 0, freed 2000
+ZALITH_FFI_CLOSURE_OK lwjgl
+== lwjgl-3.4.1 (/private/var/containers/Bundle/Application/82EEEEFE-F357-4189-86B1-346F8BD829B6/Voxelium.app/java/lwjgl-3.4.1/liblwjgl.dylib)
+step 1: dlopen
+step 2: resolve LibFFI JNI exports
+  exports come from /private/var/containers/Bundle/Application/82EEEEFE-F357-4189-86B1-346F8BD829B6/Voxelium.app/java/lwjgl-3.4.1/liblwjgl.dylib
+  abi 1, types int 0x115ef5400 double 0x115ef5478 ptr 0x115ef5448 void 0x115ef5370
+step 3: prep CIFs (GLFWkeyfun, GLFWcursorposfun, GLFWerrorfun, int(int,int), int(int))
+step 4.0: ffi_closure_alloc for GLFWkeyfun
+  writable 0x14ff7b700 code 0x115ddc000
+  trampoline 0x115ddc000: region 0x115ddc000+0x4000 prot r-x max rwx shared=1
+step 5.0: ffi_prep_closure_loc
+step 4.1: ffi_closure_alloc for GLFWcursorposfun
+  writable 0x14ff7b680 code 0x115ddc010
+  trampoline 0x115ddc010: region 0x115ddc000+0x4000 prot r-x max rwx shared=1
+step 5.1: ffi_prep_closure_loc
+step 4.2: ffi_closure_alloc for GLFWerrorfun
+  writable 0x14ff7b600 code 0x115ddc020
+  trampoline 0x115ddc020: region 0x115ddc000+0x4000 prot r-x max rwx shared=1
+step 5.2: ffi_prep_closure_loc
+step 4.3: ffi_closure_alloc for int(int,int)
+  writable 0x14ff7b580 code 0x115ddc030
+  trampoline 0x115ddc030: region 0x115ddc000+0x4000 prot r-x max rwx shared=1
+step 5.3: ffi_prep_closure_loc
+step 6: call GLFWkeyfun closure on the main thread (about to execute the trampoline)
+  ok: calls 1 args 0x1234 65 30 1 2
+step 7: call GLFWcursorposfun closure on a new pthread (as LWJGL callbacks run on the JVM thread)
+  ok: calls 1 args 0xc0ffee 12.50 -7.25
+step 8: GLFWerrorfun closure through VXGLFW (glfwSetErrorCallback + a test error)
+  ok: calls 1 code 0x10004 text "libffi callback test"
+step 9: int(int,int) closure return value
+  ok: returned 3004
+step 10.0: allocate 2000 closures (more than one trampoline table), call every 97th, free all
+  allocated 2000 on 2 trampoline pages
+  ok: called 22, wrong 0, freed 2000
+step 10.1: allocate 2000 closures (more than one trampoline table), call every 97th, free all
+  allocated 2000 on 2 trampoline pages
+  ok: called 22, wrong 0, freed 2000
+ZALITH_FFI_CLOSURE_OK lwjgl-3.4.1
+RESULT: all closures worked
+libffi closure test, 2026-10-21 14:57:51 +0000
+CS_DEBUGGED=0 debuggerNow=0 JIT flags=0x5 (iOS26=1 mirrored=0 TXM=1) page=16384
+== lwjgl (/private/var/containers/Bundle/Application/82EEEEFE-F357-4189-86B1-346F8BD829B6/Voxelium.app/java/lwjgl/liblwjgl.dylib)
+step 1: dlopen
+step 2: resolve LibFFI JNI exports
+  exports come from /private/var/containers/Bundle/Application/82EEEEFE-F357-4189-86B1-346F8BD829B6/Voxelium.app/java/lwjgl/liblwjgl.dylib
+  abi 1, types int 0x115e551f0 double 0x115e55268 ptr 0x115e55238 void 0x115e55160
+step 3: prep CIFs (GLFWkeyfun, GLFWcursorposfun, GLFWerrorfun, int(int,int), int(int))
+step 4.0: ffi_closure_alloc for GLFWkeyfun
+  writable 0x14ff19300 code 0x1155b4030
+  trampoline 0x1155b4030: region 0x1155b4000+0x4000 prot r-x max rwx shared=1
+step 5.0: ffi_prep_closure_loc
+step 4.1: ffi_closure_alloc for GLFWcursorposfun
+  writable 0x14ff19380 code 0x1155b4020
+  trampoline 0x1155b4020: region 0x1155b4000+0x4000 prot r-x max rwx shared=1
+step 5.1: ffi_prep_closure_loc
+step 4.2: ffi_closure_alloc for GLFWerrorfun
+  writable 0x14ff19400 code 0x1155b4010
+  trampoline 0x1155b4010: region 0x1155b4000+0x4000 prot r-x max rwx shared=1
+step 5.2: ffi_prep_closure_loc
+step 4.3: ffi_closure_alloc for int(int,int)
+  writable 0x14ff19480 code 0x1155b4000
+  trampoline 0x1155b4000: region 0x1155b4000+0x4000 prot r-x max rwx shared=1
+step 5.3: ffi_prep_closure_loc
+step 6: call GLFWkeyfun closure on the main thread (about to execute the trampoline)
+  ok: calls 1 args 0x1234 65 30 1 2
+step 7: call GLFWcursorposfun closure on a new pthread (as LWJGL callbacks run on the JVM thread)
+  ok: calls 1 args 0xc0ffee 12.50 -7.25
+step 8: GLFWerrorfun closure through VXGLFW (glfwSetErrorCallback + a test error)
+  ok: calls 1 code 0x10004 text "libffi callback test"
+step 9: int(int,int) closure return value
+  ok: returned 3004
+step 10.0: allocate 2000 closures (more than one trampoline table), call every 97th, free all
+  allocated 2000 on 2 trampoline pages
+  ok: called 22, wrong 0, freed 2000
+step 10.1: allocate 2000 closures (more than one trampoline table), call every 97th, free all
+  allocated 2000 on 2 trampoline pages
+  ok: called 22, wrong 0, freed 2000
+ZALITH_FFI_CLOSURE_OK lwjgl
+== lwjgl-3.4.1 (/private/var/containers/Bundle/Application/82EEEEFE-F357-4189-86B1-346F8BD829B6/Voxelium.app/java/lwjgl-3.4.1/liblwjgl.dylib)
+step 1: dlopen
+step 2: resolve LibFFI JNI exports
+  exports come from /private/var/containers/Bundle/Application/82EEEEFE-F357-4189-86B1-346F8BD829B6/Voxelium.app/java/lwjgl-3.4.1/liblwjgl.dylib
+  abi 1, types int 0x115ef5400 double 0x115ef5478 ptr 0x115ef5448 void 0x115ef5370
+step 3: prep CIFs (GLFWkeyfun, GLFWcursorposfun, GLFWerrorfun, int(int,int), int(int))
+step 4.0: ffi_closure_alloc for GLFWkeyfun
+  writable 0x14ff19480 code 0x115ddc030
+  trampoline 0x115ddc030: region 0x115ddc000+0x4000 prot r-x max rwx shared=1
+step 5.0: ffi_prep_closure_loc
+step 4.1: ffi_closure_alloc for GLFWcursorposfun
+  writable 0x14ff19280 code 0x115ddc020
+  trampoline 0x115ddc020: region 0x115ddc000+0x4000 prot r-x max rwx shared=1
+step 5.1: ffi_prep_closure_loc
+step 4.2: ffi_closure_alloc for GLFWerrorfun
+  writable 0x14ff19e80 code 0x115ddc010
+  trampoline 0x115ddc010: region 0x115ddc000+0x4000 prot r-x max rwx shared=1
+step 5.2: ffi_prep_closure_loc
+step 4.3: ffi_closure_alloc for int(int,int)
+  writable 0x14ff1b300 code 0x115ddc000
+  trampoline 0x115ddc000: region 0x115ddc000+0x4000 prot r-x max rwx shared=1
+step 5.3: ffi_prep_closure_loc
+step 6: call GLFWkeyfun closure on the main thread (about to execute the trampoline)
+  ok: calls 1 args 0x1234 65 30 1 2
+step 7: call GLFWcursorposfun closure on a new pthread (as LWJGL callbacks run on the JVM thread)
+  ok: calls 1 args 0xc0ffee 12.50 -7.25
+step 8: GLFWerrorfun closure through VXGLFW (glfwSetErrorCallback + a test error)
+  ok: calls 1 code 0x10004 text "libffi callback test"
+step 9: int(int,int) closure return value
+  ok: returned 3004
+step 10.0: allocate 2000 closures (more than one trampoline table), call every 97th, free all
+  allocated 2000 on 2 trampoline pages
+  ok: called 22, wrong 0, freed 2000
+step 10.1: allocate 2000 closures (more than one trampoline table), call every 97th, free all
+  allocated 2000 on 2 trampoline pages
+  ok: called 22, wrong 0, freed 2000
+ZALITH_FFI_CLOSURE_OK lwjgl-3.4.1
+RESULT: all closures worked
+libffi closure test, 2026-10-21 14:59:27 +0000
+CS_DEBUGGED=0 debuggerNow=0 JIT flags=0x5 (iOS26=1 mirrored=0 TXM=1) page=16384
+== lwjgl (/private/var/containers/Bundle/Application/82EEEEFE-F357-4189-86B1-346F8BD829B6/Voxelium.app/java/lwjgl/liblwjgl.dylib)
+step 1: dlopen
+step 2: resolve LibFFI JNI exports
+  exports come from /private/var/containers/Bundle/Application/82EEEEFE-F357-4189-86B1-346F8BD829B6/Voxelium.app/java/lwjgl/liblwjgl.dylib
+  abi 1, types int 0x1197c91f0 double 0x1197c9268 ptr 0x1197c9238 void 0x1197c9160
+step 3: prep CIFs (GLFWkeyfun, GLFWcursorposfun, GLFWerrorfun, int(int,int), int(int))
+step 4.0: ffi_closure_alloc for GLFWkeyfun
+  writable 0x1182f0480 code 0x119748000
+  trampoline 0x119748000: region 0x119748000+0x4000 prot r-x max rwx shared=1
+step 5.0: ffi_prep_closure_loc
+step 4.1: ffi_closure_alloc for GLFWcursorposfun
+  writable 0x1182f0400 code 0x119748010
+  trampoline 0x119748010: region 0x119748000+0x4000 prot r-x max rwx shared=1
+step 5.1: ffi_prep_closure_loc
+step 4.2: ffi_closure_alloc for GLFWerrorfun
+  writable 0x1182f0800 code 0x119748020
+  trampoline 0x119748020: region 0x119748000+0x4000 prot r-x max rwx shared=1
+step 5.2: ffi_prep_closure_loc
+step 4.3: ffi_closure_alloc for int(int,int)
+  writable 0x1182f3300 code 0x119748030
+  trampoline 0x119748030: region 0x119748000+0x4000 prot r-x max rwx shared=1
+step 5.3: ffi_prep_closure_loc
+step 6: call GLFWkeyfun closure on the main thread (about to execute the trampoline)
+  ok: calls 1 args 0x1234 65 30 1 2
+step 7: call GLFWcursorposfun closure on a new pthread (as LWJGL callbacks run on the JVM thread)
+  ok: calls 1 args 0xc0ffee 12.50 -7.25
+step 8: GLFWerrorfun closure through VXGLFW (glfwSetErrorCallback + a test error)
+  ok: calls 1 code 0x10004 text "libffi callback test"
+step 9: int(int,int) closure return value
+  ok: returned 3004
+step 10.0: allocate 2000 closures (more than one trampoline table), call every 97th, free all
+  allocated 2000 on 2 trampoline pages
+  ok: called 22, wrong 0, freed 2000
+step 10.1: allocate 2000 closures (more than one trampoline table), call every 97th, free all
+  allocated 2000 on 2 trampoline pages
+  ok: called 22, wrong 0, freed 2000
+ZALITH_FFI_CLOSURE_OK lwjgl
+== lwjgl-3.4.1 (/private/var/containers/Bundle/Application/82EEEEFE-F357-4189-86B1-346F8BD829B6/Voxelium.app/java/lwjgl-3.4.1/liblwjgl.dylib)
+step 1: dlopen
+step 2: resolve LibFFI JNI exports
+  exports come from /private/var/containers/Bundle/Application/82EEEEFE-F357-4189-86B1-346F8BD829B6/Voxelium.app/java/lwjgl-3.4.1/liblwjgl.dylib
+  abi 1, types int 0x11a485400 double 0x11a485478 ptr 0x11a485448 void 0x11a485370
+step 3: prep CIFs (GLFWkeyfun, GLFWcursorposfun, GLFWerrorfun, int(int,int), int(int))
+step 4.0: ffi_closure_alloc for GLFWkeyfun
+  writable 0x11a1a0580 code 0x119768000
+  trampoline 0x119768000: region 0x119768000+0x4000 prot r-x max rwx shared=1
+step 5.0: ffi_prep_closure_loc
+step 4.1: ffi_closure_alloc for GLFWcursorposfun
+  writable 0x11a1a0500 code 0x119768010
+  trampoline 0x119768010: region 0x119768000+0x4000 prot r-x max rwx shared=1
+step 5.1: ffi_prep_closure_loc
+step 4.2: ffi_closure_alloc for GLFWerrorfun
+  writable 0x11a1a0600 code 0x119768020
+  trampoline 0x119768020: region 0x119768000+0x4000 prot r-x max rwx shared=1
+step 5.2: ffi_prep_closure_loc
+step 4.3: ffi_closure_alloc for int(int,int)
+  writable 0x11a1a0680 code 0x119768030
+  trampoline 0x119768030: region 0x119768000+0x4000 prot r-x max rwx shared=1
+step 5.3: ffi_prep_closure_loc
+step 6: call GLFWkeyfun closure on the main thread (about to execute the trampoline)
+  ok: calls 1 args 0x1234 65 30 1 2
+step 7: call GLFWcursorposfun closure on a new pthread (as LWJGL callbacks run on the JVM thread)
+  ok: calls 1 args 0xc0ffee 12.50 -7.25
+step 8: GLFWerrorfun closure through VXGLFW (glfwSetErrorCallback + a test error)
+  ok: calls 1 code 0x10004 text "libffi callback test"
+step 9: int(int,int) closure return value
+  ok: returned 3004
+step 10.0: allocate 2000 closures (more than one trampoline table), call every 97th, free all
+  allocated 2000 on 2 trampoline pages
+  ok: called 22, wrong 0, freed 2000
+step 10.1: allocate 2000 closures (more than one trampoline table), call every 97th, free all
+  allocated 2000 on 2 trampoline pages
+  ok: called 22, wrong 0, freed 2000
+ZALITH_FFI_CLOSURE_OK lwjgl-3.4.1
+RESULT: all closures worked
